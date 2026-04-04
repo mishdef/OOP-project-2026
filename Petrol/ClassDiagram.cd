@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="gsst.Model.FuelStuff.FuelType">
+    <Position X="17.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACIAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FuelStuff\FuelType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.FuelStuff.Pump">
+    <Position X="22.75" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAEAAAAAAAAAAAAACQAAEAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Model\FuelStuff\Pump.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.FuelStuff.Tank">
+    <Position X="20" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAACAAAAQAAAEAIAAACAAAA=</HashCode>
+      <FileName>Model\FuelStuff\Tank.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.OrderProcessors.FuelOrderProcessor">
+    <Position X="32.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Model\OrderProcessors\FuelOrderProcessor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Model.CartItem">
+    <Position X="22.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Model\OrderSection\CartItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="gsst.Model.Fuel" Collapsed="true">
+    <Position X="23.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Model\OrderSection\Fuel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.Good" Collapsed="true">
+    <Position X="21.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAABAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\OrderSection\Good.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.Order">
+    <Position X="22.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAACBAAAAAAAAAAAAAAQAANAAAAAAAAAAA=</HashCode>
+      <FileName>Model\OrderSection\Order.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Model.Product" Collapsed="true">
+    <Position X="22.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\OrderSection\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.User.User">
+    <Position X="10" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAEQAAAAAAAAAAAAACAAABAAAAAAA=</HashCode>
+      <FileName>Model\User\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.User.UserRoles">
+    <Position X="7.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\User\UserRoles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.User.UserSession">
+    <Position X="4.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\User\UserSession.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.BonusCard">
+    <Position X="25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAAAAAEAACAQAAAAAAIAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Model\BonusCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Model.SettingsModel">
+    <Position X="13.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAQAAA=</HashCode>
+      <FileName>Model\SettingsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Services.AppDbContext">
+    <Position X="4.25" Y="0.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACAAkQAAAAAAAAAAQAAAEAAAAAAIEAIIAAAAACQ=</HashCode>
+      <FileName>Services\AppDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gsst.Services.AuthService">
+    <Position X="11" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Services\AuthService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.BonusService">
+    <Position X="27.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAABAQQQAAQIAIAAAIAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Services\BonusService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.FuelTypeService">
+    <Position X="17.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAABBQAAAAAAAAAAMAAAgAAEAAAAAAAAAA=</HashCode>
+      <FileName>Services\FuelTypeService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.GoodsService">
+    <Position X="18.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAJBAAIAAAQAiAAAAAAAAABAAAAAAAAQA=</HashCode>
+      <FileName>Services\GoodsService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.OrderBuilder">
+    <Position X="19.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAIAAACAAAAAAAgAAAgAAEAAQABAAAAAA=</HashCode>
+      <FileName>Services\OrderBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_order" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.OrderService">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAABAAQEAAEAAAg=</HashCode>
+      <FileName>Services\OrderService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.PumpService">
+    <Position X="22.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAABEAAAAgkAAAAAAAAEEAAAIAAAAACAAA=</HashCode>
+      <FileName>Services\PumpService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.SettingsService">
+    <Position X="13.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Services\SettingsService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Settings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="gsst.Services.StatisticsService">
+    <Position X="1" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAAAAABAAEAAEAAAAAAAEACAAAAAQgAAQAAAA=</HashCode>
+      <FileName>Services\StatisticsService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.TanksService">
+    <Position X="20" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQMIACBAAAADBAgAAAAAAABAAFAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Services\TankService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="gsst.Services.UserService">
+    <Position X="8.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAQAABAAEAAAAAAAAAQAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="gsst.Interfaces.IAuthService">
+    <Position X="0.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Interfaces\IAuthService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IBonusService">
+    <Position X="4.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAQQQAAQIAIAAAIAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Interfaces\IBonusService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IFuelTypeService">
+    <Position X="4.25" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAABQAAAAAAAAAAIAAAgAAEAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFuelTypeService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IGoodsService">
+    <Position X="0.75" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAIBAAIAAAQAiAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Interfaces\IGoodsService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IOrderBuilder">
+    <Position X="2.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAACAAAAAAAgAAAgAAEAAAABAAAAAA=</HashCode>
+      <FileName>Interfaces\IOrderBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IOrderProcessor">
+    <Position X="32.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Interfaces\IOrderProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IOrderService">
+    <Position X="0.75" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAAAg=</HashCode>
+      <FileName>Interfaces\IOrderService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IPumpService">
+    <Position X="4.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAEAAAAgkAAAAAAAAEEAAAAAAAAACAAA=</HashCode>
+      <FileName>Interfaces\IPumpService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IStatisticsService">
+    <Position X="0.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAAAAAAAAEAAEAAAAAAAEACAAAAAQgAAQAAAA=</HashCode>
+      <FileName>Interfaces\IStatisticsService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.IUserService">
+    <Position X="2.5" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAQAAAAAEAAAAAAAAAQAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Interfaces\IUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="gsst.Interfaces.ITanksService">
+    <Position X="2.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQMIACBAAAADAAgAAAAAAABAAFAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ITanksService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="gsst.Model.FuelStuff.PumpStatus">
+    <Position X="22.75" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Model\FuelStuff\PumpStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
