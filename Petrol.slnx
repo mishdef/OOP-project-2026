@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="Petrol/Petrol.csproj" />
   <Project Path="PetrolUnitTests/PetrolUnitTests.csproj" Id="11611fef-0ea4-45b5-9411-e9944770c102" />
+  <Project Path="PetrolWPF/PetrolWPF.csproj" />
+  <Project Path="PetrolControlLibrary/PetrolControlLibrary.csproj" />
 </Solution>

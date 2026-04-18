@@ -16,17 +16,21 @@ namespace gsst.Model
 
         public DateTime Date { get; set; } = DateTime.Now;
 
-        
-        public double Total 
-        { 
-            get {
+        public int UserId { get; set; }
+        public User.User User { get; set; } = null!;
+
+
+        public double Total
+        {
+            get
+            {
                 double total = 0;
                 foreach (var item in Items)
                 {
                     total += item.Subtotal;
                 }
-                return total - BonusSpent;
-            } 
+                return Math.Round(total - BonusSpent, 2);
+            }
         }
 
         public Order() { }

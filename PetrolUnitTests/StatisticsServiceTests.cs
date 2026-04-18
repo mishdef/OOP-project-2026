@@ -30,14 +30,14 @@ namespace GsstUnitTests
             var good1 = new Good { Name = "Coffee", Price = 30.0, BarCode = "C123", Image = new byte[0] };
             var good2 = new Good { Name = "Tea", Price = 20.0, BarCode = "T123", Image = new byte[0] };
 
-            var order1 = new Order { Date = Date1 };
+            var order1 = new Order { Date = Date1, UserId = 1 };
             order1.Items.Add(new CartItem { Product = fuel1, Quantity = 10 });
             order1.Items.Add(new CartItem { Product = good1, Quantity = 2 });
 
-            var order2 = new Order { Date = Date1 };
+            var order2 = new Order { Date = Date1, UserId = 1 };
             order2.Items.Add(new CartItem { Product = fuel2, Quantity = 5 });
 
-            var order3 = new Order { Date = Date2 };
+            var order3 = new Order { Date = Date2, UserId = 1 };
             order3.Items.Add(new CartItem { Product = good2, Quantity = 3 });
 
             _context.Orders.AddRange(order1, order2, order3);
@@ -117,10 +117,9 @@ namespace GsstUnitTests
         {
             var popular = _statsService.GetMostPopularProducts(3);
 
-            Assert.AreEqual(3, popular.Count);
-            Assert.AreEqual("A-99 Premium", popular[0]);
-            Assert.AreEqual("Diesel Extra", popular[1]);
-            Assert.AreEqual("Tea", popular[2]);
+            Assert.AreEqual(2, popular.Count);
+            Assert.AreEqual("Tea", popular[0]);
+            Assert.AreEqual("Coffee", popular[1]);
         }
     }
 }

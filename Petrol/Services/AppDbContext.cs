@@ -66,10 +66,10 @@ namespace gsst.Services
             );
 
             modelBuilder.Entity<FuelType>().HasData(
-                new FuelType { Id = 1, Name = "A-95" },
-                new FuelType { Id = 2, Name = "A-92" },
-                new FuelType { Id = 3, Name = "Diesel" },
-                new FuelType { Id = 4, Name = "Gas" }
+                new FuelType { Id = 1, Name = "A-95", Price = 5.0 },
+                new FuelType { Id = 2, Name = "A-92", Price = 4.0 },
+                new FuelType { Id = 3, Name = "Diesel", Price = 6.0 },
+                new FuelType { Id = 4, Name = "Gas", Price = 3.0 }
             );
 
             modelBuilder.Entity<Pump>().HasData(
@@ -91,12 +91,6 @@ namespace gsst.Services
                 new BonusCard { Id = 2, Barcode = "5678", BonusBalance = 200, ClientName = "Jane Smith" }
             );
 
-            //goods
-            modelBuilder.Entity<Good>().HasData(
-                new Good { Id = 1, Name = "Coca-Cola", Price = 1.5, BarCode = "1234", Image = new byte[] { 0xFF, 0xD8, 0xFF } },
-                new Good { Id = 2, Name = "Pepsi", Price = 1.4, BarCode = "5678", Image = new byte[] { 0xFF, 0xD8, 0xFF } },
-                new Good { Id = 3, Name = "Water", Price = 1.0, BarCode = "9012", Image = new byte[] { 0xFF, 0xD8, 0xFF } }
-            );
         }
     }
 }

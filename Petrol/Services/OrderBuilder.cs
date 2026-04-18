@@ -32,6 +32,8 @@ namespace gsst.Services
         public void RemoveItem(CartItem item)
         {
             _order.Items.Remove(item);
+
+            _order.BonusSpent = 0;
         }
 
         public void AddQuanity(CartItem item, int quantity)
@@ -39,6 +41,10 @@ namespace gsst.Services
             if (quantity > 0)
             {
                 item.Quantity += quantity;
+            }
+            else if (quantity == 0)
+            {
+                RemoveItem(item);
             }
         }
 
@@ -55,7 +61,14 @@ namespace gsst.Services
             if (_order.BonusCardId == null) throw new ArgumentException("No bonus card");
             if (amount < 0) throw new ArgumentException("Amount must be greater than 0");
             if (amount > _bonusService.GetBonusBalance(_order.BonusCardId ?? 0)) throw new ArgumentException("Not enough balance");
-            if (amount > _order.Total) throw new ArgumentException("Amount must be less than total price");
+
+            double rawTotal = 0;
+            foreach (var item in _order.Items)
+            {
+                rawTotal += item.Subtotal;
+            }
+
+            if (amount > rawTotal) throw new ArgumentException("Amount must be less than total price");
 
             _order.BonusSpent = amount;
         }

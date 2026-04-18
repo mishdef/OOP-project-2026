@@ -17,5 +17,6 @@ namespace gsst.Interfaces
         void RefillTanksWithFuelType(FuelType fuelType, double amount);
         void RemoveFuelFromTanks(FuelType fuelType, double amount);
         void UpdateTank(int id, double capacity, double volume);
+        void RemoveFuelFromConnectedTanks(IEnumerable<Tank> connectedTanks, FuelType fuelType, double amount);
     }
 }

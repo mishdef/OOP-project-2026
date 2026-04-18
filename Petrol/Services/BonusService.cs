@@ -110,11 +110,18 @@ namespace gsst.Services
             }
         }
 
+
+
         public BonusCard BonusCardGetByBarcode(string barcode)
         {
             var bonusCard = _context.BonusCards.Where(c => c.Barcode == barcode).FirstOrDefault();
             if (bonusCard != null) return bonusCard;
             else return null;
+        }
+
+        public IEnumerable<BonusCard> GetAllBonusCards()
+        {
+            return _context.BonusCards.ToList();
         }
     }
 }

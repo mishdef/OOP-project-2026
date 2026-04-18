@@ -110,9 +110,12 @@ namespace gsst.Services
             if (_context.Tanks.Count() == 0) throw new ArgumentException("Tanks not found");
             if (_context.Tanks.Any(x => x.FuelType == fuelType) == false) throw new ArgumentException("Fuel type not found");
 
-            var tanks = _context.Tanks.Where(x => x.FuelType == fuelType).ToList();
-            var totalAvailable = tanks.Sum(t => t.Volume);
+            var tanks = _context.Tanks
+                .Where(x => x.FuelType == fuelType)
+                .OrderByDescending(t => t.Volume)
+                .ToList();
 
+            var totalAvailable = tanks.Sum(t => t.Volume);
             if (totalAvailable < amount)
                 throw new InvalidOperationException("Not enough fuel in tanks!");
 
@@ -156,6 +159,50 @@ namespace gsst.Services
                 {
                     tank.Volume += leftToFill;
                     leftToFill = 0;
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
+        
+        public void RemoveFuelFromConnectedTanks(IEnumerable<Tank> connectedTanks, FuelType fuelType, double amount)
+        {
+            if (fuelType == null) throw new ArgumentNullException(nameof(fuelType));
+            if (amount < 0) throw new ArgumentException("Amount must be greater than or equal to 0");
+
+            var targetTankIds = connectedTanks
+                .Where(t => t.FuelType?.Id == fuelType.Id)
+                .Select(t => t.Id)
+                .ToList();
+
+            if (!targetTankIds.Any())
+                throw new ArgumentException("No connected tanks found for this fuel type");
+
+            var dbTanks = _context.Tanks
+                .Where(t => targetTankIds.Contains(t.Id))
+                .OrderByDescending(t => t.Volume)
+                .ToList();
+
+            var totalAvailable = dbTanks.Sum(t => t.Volume);
+
+            if (totalAvailable < amount)
+                throw new InvalidOperationException("Not enough fuel in connected tanks!");
+
+            var amountLeftToRemove = amount;
+
+            foreach (var tank in dbTanks)
+            {
+                if (tank.Volume >= amountLeftToRemove)
+                {
+                    tank.Volume -= amountLeftToRemove;
+                    amountLeftToRemove = 0;
+                    break;
+                }
+                else
+                {
+                    amountLeftToRemove -= tank.Volume;
+                    tank.Volume = 0;
                 }
             }
 

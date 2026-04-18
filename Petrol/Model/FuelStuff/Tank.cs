@@ -42,44 +42,33 @@ namespace gsst.Model.FuelStuff
             }
         }
 
-        public double Volume {
+        public double Volume
+        {
             get
             {
-                if (FuelType == null)
-                {
-                    throw new ArgumentNullException("Fuel type is not set");
-                }
-                if (_volume < Capacity / 10)
-                {
-                    LowVolume?.Invoke(this, EventArgs.Empty);
-                }
+                if (FuelType == null) throw new ArgumentNullException("Fuel type is not set");
+
                 return _volume;
             }
             set
             {
-                if (FuelType == null)
-                {
-                    throw new ArgumentNullException("Fuel type is not set");
-                }
+                if (FuelType == null) throw new ArgumentNullException("Fuel type is not set");
 
-                if (value > Capacity)
-                {
-                    _volume = Capacity;
-                }
-                else if (value < 0)
-                {
-                    throw new ArgumentException("Volume must be greater than 0");
-                }
-                else
-                {
-                    _volume = value;
-                }
+                double oldVolume = _volume;
 
-                if (_volume < Capacity / 10)
+                if (value > Capacity) _volume = Capacity;
+                else if (value < 0) throw new ArgumentException("Volume must be greater than 0");
+                else _volume = value;
+
+                double threshold = Capacity / 10;
+
+                if (oldVolume >= threshold && _volume < threshold)
                 {
                     LowVolume?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
+
+        public List<Pump> ConnectedPumps { get; set; } = new List<Pump>();
     }
 }

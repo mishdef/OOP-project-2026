@@ -13,5 +13,7 @@ namespace gsst.Interfaces
         bool IsBonusCardValid(int bonusCardId);
         void RemoveBonus(int bonusCardId, double amount);
         void UpdateBonusCard(int bonusCardId, string clientName, string barcode);
+
+        IEnumerable<BonusCard> GetAllBonusCards();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using gsst.Interfaces;
 using gsst.Model.FuelStuff;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace gsst.Services
 {
@@ -9,33 +10,93 @@ namespace gsst.Services
         private readonly AppDbContext _context;
         private readonly ITanksService _tankService;
 
+        public event Action<int, bool>? PumpStateChanged;
+
+        private static readonly object _dbLock = new object();
+
         public PumpService(AppDbContext dbContext, ITanksService tankService)
         {
             _context = dbContext;
             _tankService = tankService;
         }
 
+        public bool IsFuelAvailableOnPump(int pumpId, int fuelTypeId, double requestedAmount)
+        {
+            var pump = _context.Pumps
+                .Include(p => p.ConnectedTanks)
+                .ThenInclude(t => t.FuelType)
+                .FirstOrDefault(p => p.Id == pumpId);
+
+            if (pump == null) return false;
+
+            var availableVolume = pump.ConnectedTanks
+                .Where(t => t.FuelType?.Id == fuelTypeId)
+                .Sum(t => t.Volume);
+
+            return availableVolume >= requestedAmount;
+        }
+
         public async Task StartPumpAsync(Pump pump, FuelType type, double quantity)
         {
-            var availablePumps = pump.ConnectedTanks.Where(x => x.FuelType == type).ToList();
-
-            if (availablePumps == null || availablePumps.Count == 0) throw new Exception("No tanks available for this fuel type");
-
-            if (quantity > availablePumps.Sum(x => x.Volume)) throw new Exception("Not enough fuel in tanks");
-
-                if (pump.Status == PumpStatus.Busy) throw new Exception("Pump is busy");
-                var fuelTypes = GetFuelTypesForPump(pump.Id);
-                if (fuelTypes == null) throw new Exception("Pump is not connected to any tanks");
-
-                await Task.Run(() =>
+            PumpStateChanged?.Invoke(pump.Id, false);
+            try
+            {
+                lock (_dbLock)
                 {
-                    int timeToPump = (int)(quantity * 1000);
-                    pump.Status = PumpStatus.Busy;
-                    Thread.Sleep(timeToPump);
-                    _tankService.RemoveFuelFromTanks(type, quantity);
-                    pump.Status = PumpStatus.Free;
+                    var dbPump = _context.Pumps
+                        .Include(p => p.ConnectedTanks)
+                        .ThenInclude(t => t.FuelType)
+                        .FirstOrDefault(p => p.Id == pump.Id);
 
-                });
+                    if (dbPump == null) throw new Exception("Pump not found");
+
+                    var availableTanks = dbPump.ConnectedTanks.Where(x => x.FuelType?.Id == type.Id).ToList();
+                    if (availableTanks.Count == 0)
+                        throw new Exception("No tanks available for this fuel type on this pump");
+
+                    if (quantity > availableTanks.Sum(x => x.Volume))
+                        throw new Exception("Not enough fuel in connected tanks");
+
+                    if (dbPump.Status == PumpStatus.Busy)
+                        throw new Exception("Pump is already busy");
+
+                    dbPump.Status = PumpStatus.Busy;
+                    _context.SaveChanges();
+
+                    _tankService.RemoveFuelFromConnectedTanks(dbPump.ConnectedTanks, type, quantity);
+                }
+
+                int timeToPump = (int)(quantity * 1000);
+                if (timeToPump < 10000) timeToPump = 10000;
+                await Task.Delay(timeToPump);
+
+                lock (_dbLock)
+                {
+                    var dbPump = _context.Pumps.Find(pump.Id);
+                    if (dbPump != null)
+                    {
+                        dbPump.Status = PumpStatus.Free;
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lock (_dbLock)
+                {
+                    var pumpToFree = _context.Pumps.Find(pump.Id);
+                    if (pumpToFree != null && pumpToFree.Status == PumpStatus.Busy)
+                    {
+                        pumpToFree.Status = PumpStatus.Free;
+                        _context.SaveChanges();
+                    }
+                }
+                throw;
+            }
+            finally
+            {
+                PumpStateChanged?.Invoke(pump.Id, true);
+            }
         }
 
         public Pump AddPump(string pumpName, List<Tank> connectedTanks)
@@ -115,7 +176,7 @@ namespace gsst.Services
                 return new List<FuelType>();
             }
 
-            var types = pump.ConnectedTanks.Select(x => x.FuelType).Distinct().ToList();
+            var types = pump.ConnectedTanks.Select(x => x.FuelType).DistinctBy(x => x.Id).ToList();
 
             return types;
         }

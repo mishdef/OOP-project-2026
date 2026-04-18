@@ -28,8 +28,6 @@ namespace gsst.Model.FuelStuff
             }
         }
 
-        public List<Tank> ConnectedTanks { get; set; }
-
         public PumpStatus Status 
         { 
             get => _status;
@@ -45,5 +43,7 @@ namespace gsst.Model.FuelStuff
         {
             return Status == PumpStatus.Free;
         }
+
+        public List<Tank> ConnectedTanks { get; set; } = new List<Tank>();
     }
 }

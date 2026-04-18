@@ -1,5 +1,7 @@
 ﻿using gsst.Interfaces;
 using gsst.Model;
+using gsst.Model.User;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +21,7 @@ namespace gsst.Services
             _bonusService = bonusService;
         }
 
-        public void ProcessCheckout(Order order)
+        public void ProcessCheckout(Order order, int userId)
         {
             if (order.BonusCardId.HasValue || order.BonusCardId != null)
             {
@@ -30,10 +32,36 @@ namespace gsst.Services
                 else
                 {
                     var bonusPoints = order.Total / 100 * SettingsService.Settings.BonusRate;
-
                     _bonusService.AddBonus(order.BonusCardId.Value, bonusPoints);
                 }
             }
+
+            foreach (var item in order.Items)
+            {
+                if (item.Product is Fuel currentFuel)
+                {
+                    var existingFuel = _db.Fuels.FirstOrDefault(f =>
+                        f.Type.Id == currentFuel.Type.Id &&
+                        f.Pump.Id == currentFuel.Pump.Id);
+
+                    if (existingFuel != null)
+                    {
+                        item.Product = existingFuel;
+                    }
+                    else
+                    {
+                        _db.Entry(currentFuel.Type).State = EntityState.Unchanged;
+                        _db.Entry(currentFuel.Pump).State = EntityState.Unchanged;
+                    }
+                }
+                else if (item.Product is Good good)
+                {
+                    _db.Entry(good).State = EntityState.Unchanged;
+                }
+            }
+
+            order.UserId = userId;
+            order.Date = DateTime.Now;
 
             _db.Orders.Add(order);
             _db.SaveChanges();
@@ -64,6 +92,20 @@ namespace gsst.Services
                     // можно какой-то прикол прикрутить
                 }
             }
+        }
+
+        public List<Order> GetOrderHistory()
+        {
+            return _db.Orders
+                .Include(o => o.User)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Product)
+                .Include(o => o.Items)
+                    .ThenInclude(i => (i.Product as Fuel).Type)
+                .Include(o => o.Items)
+                    .ThenInclude(i => (i.Product as Fuel).Pump)
+                .OrderByDescending(o => o.Date)
+                .ToList();
         }
     }
 }

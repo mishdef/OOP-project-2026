@@ -31,7 +31,7 @@ namespace gsst.Services
 
         public void ChangePrice(int productId, double newPrice)
         {
-            if (_context.Products.Find(productId) is Good good)
+            if (_context.Products.Find(productId) is Good good && !good.IsDeleted)
             {
                 good.Price = newPrice;
                 _context.SaveChanges();
@@ -45,9 +45,9 @@ namespace gsst.Services
 
         public void DeleteProduct(int productId)
         {
-            if (_context.Products.Find(productId) is Good good)
+            if (_context.Products.Find(productId) is Good good && !good.IsDeleted)
             {
-                _context.Products.Remove(good);
+                good.IsDeleted = true;
                 _context.SaveChanges();
             }
             else
@@ -58,7 +58,7 @@ namespace gsst.Services
 
         public void UpdateProduct(int productId, string name, double price, string barcode, byte[] image)
         {
-            if (_context.Products.Find(productId) is Good good)
+            if (_context.Products.Find(productId) is Good good && !good.IsDeleted)
             {
                 good.Name = name;
                 good.Price = price;
@@ -74,12 +74,12 @@ namespace gsst.Services
 
         public List<Good> GetAllProducts()
         {
-            return _context.Products.Select(x => x as Good).ToList();
+            return _context.Goods.ToList();
         }
 
         public Good GetProductById(int productId)
         {
-            if (_context.Products.Find(productId) is Good good)
+            if (_context.Products.Find(productId) is Good good && !good.IsDeleted)
             {
                 return good;
             }
@@ -91,7 +91,7 @@ namespace gsst.Services
 
         public Good GetProductByBarCode(string barCode)
         {
-            var res = GetAllProducts().Where(x => x.BarCode == barCode).FirstOrDefault();
+            var res = GetAllProducts().Where(x => x.BarCode == barCode && !x.IsDeleted).FirstOrDefault();
             if (res != null)
             {
                 return res;
@@ -104,7 +104,7 @@ namespace gsst.Services
 
         public Good GetProductByName(string name)
         {
-            var res = GetAllProducts().Where(x => x.Name == name).FirstOrDefault();
+            var res = GetAllProducts().Where(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
             if (res != null)
             {
                 return res;
@@ -119,21 +119,13 @@ namespace gsst.Services
         {
             var res = GetAllProducts()
                 .Where(
-                x =>
-                x.Name.Contains(prompt) ||
+                x => !x.IsDeleted &&
+                (x.Name.Contains(prompt) ||
                 x.BarCode.Contains(prompt) ||
-                x.Price.ToString().Contains(prompt) ||
-                x.BarCode.Contains(prompt))
+                x.Price.ToString().Contains(prompt)))
                 .ToList();
 
-            if (res != null)
-            {
-                return res;
-            }
-            else
-            {
-                return new List<Good>();
-            }
+            return res ?? new List<Good>();
         }
     }
 }

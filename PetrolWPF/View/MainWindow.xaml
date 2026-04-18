@@ -1,0 +1,288 @@
+﻿<Window xmlns:PetrolControlLibrary="clr-namespace:PetrolControlLibrary;assembly=PetrolControlLibrary"  x:Class="Gsstwpfmock.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gsstwpfmock"
+        xmlns:conv="clr-namespace:PetrolWPF.Converters"
+        mc:Ignorable="d" Icon="/Accets/logo.jpg"
+        Title="Petrol Control Terminal" Height="691" Width="1100" MinWidth="984" MinHeight="621" Background="#F4F4F4"
+        PreviewKeyDown="ScanerPreviewKeyDown"  >
+
+    <Window.Resources>
+        <Style x:Key="PumpStyle" TargetType="Border">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <conv:ByteArrayToImageConverter x:Key="ImageConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--MEnu-->
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="ExitMenuItem_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Admin Dashboard"
+                      Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"
+                      Click="AdminDashboardMenuItemClick">
+            </MenuItem>
+            <MenuItem Header="Bonsus Card" Click="BonusCardsMenuItemClick">
+
+            </MenuItem>
+        </Menu>
+
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right">
+            <Label FontWeight="Bold"
+                   FontStyle="Italic"
+                   Content="{Binding Name}">
+            </Label>
+            <Menu BorderBrush="#00000000"
+                  Background="#00000000">
+                <MenuItem BorderBrush="#00000000"
+                          Background="#00000000" Width="25"
+                          Header="Settings"
+                      >
+                    <MenuItem.Icon>
+                        <Image 
+                       Margin="0"
+                    Source="/Accets/settings_24dp_000000_FILL0_wght400_GRAD0_opsz24.png">
+
+                        </Image>
+                    </MenuItem.Icon>
+                    <MenuItem Header="Logout"
+                          Click="LogoutButtonClick">
+
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+
+        <PetrolControlLibrary:CheckoutControl Grid.Row="1">
+
+        </PetrolControlLibrary:CheckoutControl>
+
+        <Grid x:Name="MainGrid" Grid.Column="1" Margin="10,0,0,0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="BonusCardBorder"
+                    PreviewKeyDown="ScanerPreviewKeyDown"
+                Grid.Row="0" Grid.Column="0" Background="#EEEEEE" CornerRadius="5" BorderBrush="#CCCCCC" BorderThickness="1"
+                    Visibility="Visible">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Label Content="Bonus card:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Width="200" Margin="0" x:Name="BonusCardTextBox" 
+                                Text="{Binding BonusCardNumber, UpdateSourceTrigger=PropertyChanged}" 
+                                VerticalContentAlignment="Center"/>
+                        <TextBlock Text="{Binding BonusCard.BonusBalance, StringFormat='Balance: {0:F2}', TargetNullValue=''}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding BonusCard.ClientName, TargetNullValue=''}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+                    <Button Click="ConfigureBonusCardButtonClick" 
+                            Width="25"
+                            Height="25"
+                            Margin="0,0,7,0" Padding="0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                            Visibility="{Binding IsBonusCardValid, Converter={StaticResource BoolToVis}}">
+                        <Image Source="/Accets/credit.png" Width="18" Height="18"></Image>
+                    </Button>
+                </Grid>
+            </Border>
+
+
+            <GroupBox x:Name="PumpsGroupBox" 
+                      Visibility="Visible"
+                      Header="PUMP SELECTION" 
+                      Grid.Row="1" 
+                      Margin="0,4,0,5"
+                      PreviewKeyDown="ScanerPreviewKeyDown">
+                <GroupBox.InputBindings>
+                    <MouseBinding Gesture="LeftClick" 
+                      Command="{Binding PumpsGroupBoxMouseLeftCommand}" />
+                </GroupBox.InputBindings>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              PreviewKeyDown="ScanerPreviewKeyDown">
+                    <ItemsControl ItemsSource="{Binding Pumps}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Margin="5" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <PetrolControlLibrary:PumpControl Margin="5" Width="120" Height="110">
+                                    <PetrolControlLibrary:PumpControl.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" 
+                              Command="{Binding DataContext.SetPumpCommand, 
+                                                 RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                              CommandParameter="{Binding Model}" />
+                                    </PetrolControlLibrary:PumpControl.InputBindings>
+                                </PetrolControlLibrary:PumpControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </GroupBox>
+
+            <GroupBox x:Name="FuelGroupBox" 
+                      Header="FUEL CONFIGURATION" 
+                      Grid.Row="2" 
+                      Margin="0,5,0,0"
+                      Visibility="Visible"
+                      IsEnabled="{Binding IsPumpSelected}"
+                      PreviewKeyDown="ScanerPreviewKeyDown">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock FontWeight="Bold" 
+                   Foreground="#555" 
+                   Text="{Binding SelectedPump.Name, StringFormat='Pump Selected: {0}', FallbackValue='Pump Selected: None', TargetNullValue='Pump Selected: None'}"
+                   Margin="5"/>
+                        <Label Content="Fuel type:"/>
+                        <ComboBox Height="35" Margin="0,0,0,10"
+                  ItemsSource="{Binding FuelTypes}"
+                  DisplayMemberPath="Name"
+                  SelectedItem="{Binding SelectedFuelType, Mode=TwoWay}">
+                        </ComboBox>
+
+                        <TextBlock Text="{Binding AvailableVolumeText}" 
+           Foreground="Gray" 
+           Margin="5,0,0,0" 
+           VerticalAlignment="Center" />
+                        <TextBlock FontWeight="Bold" Foreground="#555" Margin="5,5,0,0"
+                   Text="{Binding SelectedFuelType.Price, StringFormat='Price per L: {0:F2}$', FallbackValue='Price per L: 0.00$', TargetNullValue='Price per L: 0.00$'}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Amount (L):" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox Height="30" Grid.Row="0" Grid.Column="1" Margin="0,2" VerticalContentAlignment="Center" 
+             Text="{Binding FuelAmount, UpdateSourceTrigger=PropertyChanged, Delay=300}"/>
+
+                            <Label Content="Summ ($):" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox Height="30" Grid.Row="1" Grid.Column="1" Margin="0,2" VerticalContentAlignment="Center" 
+             FontWeight="Bold" 
+             Text="{Binding FuelSum, UpdateSourceTrigger=PropertyChanged, Delay=300, StringFormat='{}{0:F2}'}"/>
+                        </Grid>
+
+                        <Button Content="Add to check" Height="40" Margin="0,15,0,0" FontWeight="Bold"
+                Command="{Binding AddFuelProductCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+
+            <!--GOODS SECTION-->
+
+            <Grid x:Name="GoodsGrid"
+                  Visibility="Hidden"
+                  PreviewKeyDown="ScanerPreviewKeyDown">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Background="#EEEEEE"
+                        BorderBrush="#BBBBBB"
+                        CornerRadius="5"
+                        BorderThickness="1"
+                        PreviewKeyDown="ScanerPreviewKeyDown">
+                    <StackPanel Orientation="Horizontal" Margin="7 7">
+                        <Label HorizontalAlignment="Center" Height="30">Search:</Label>
+                        <TextBox x:Name="SearchBox" 
+                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=100}" 
+                            PreviewKeyDown="SearchBox_PreviewKeyDown"
+                            Width="400"></TextBox>
+                    </StackPanel>
+                </Border>
+                <GroupBox x:Name="GoodsGroupBox"
+                          PreviewKeyDown="ScanerPreviewKeyDown"
+                      Visibility="Visible"
+                      Header="GOODS SELECTION" 
+                      Grid.Row="1" 
+                      Margin="0,5,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Products}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Margin="5" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <PetrolControlLibrary:ProductControl Margin="5" Width="140" Height="140">
+                                        <PetrolControlLibrary:ProductControl.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" 
+                                                        Command="{Binding DataContext.AddProductCommand, 
+                                                                 RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+                                        </PetrolControlLibrary:ProductControl.InputBindings>
+                                    </PetrolControlLibrary:ProductControl>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+                    </ScrollViewer>
+                </GroupBox>
+            </Grid>
+
+        </Grid>
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="0 10 0 0" HorizontalAlignment="Right"
+                    PreviewKeyDown="ScanerPreviewKeyDown">
+            <Button x:Name="FuelButton"
+            BorderBrush="#00000000"
+            Background="#C3C3C3"
+            Height="70"
+            Width="70"
+            Margin="0 0 0 10"
+            FontWeight="Bold"
+            Click="FuelButtonClick">
+                Fuel
+            </Button>
+            <Button x:Name="GoodsButton"
+            BorderBrush="#00000000"
+            Background="#DFDFDF"
+            Height="70"
+            Width="70"
+            Click="GoodsButtonClick">
+                Goods
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

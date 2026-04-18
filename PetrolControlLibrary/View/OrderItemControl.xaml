@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="PetrolControlLibrary.OrderItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PetrolControlLibrary"
+             mc:Ignorable="d" Height="36" Width="250">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Width="18" Height="18"
+                BorderBrush="#00000000"
+                FontWeight="Bold" 
+                Click="Button_Click"
+                Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete One" 
+                      Command="{Binding PlacementTarget.Tag.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"/>
+                        <MenuItem Header="Delete All"
+                      Command="{Binding PlacementTarget.Tag.RemoveCartItemCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"
+                      FontWeight="Bold"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <TextBlock Text="···" FontWeight="Bold" VerticalAlignment="Center" Height="18"/>
+            </Button>
+
+            <TextBlock Grid.Column="1" Text="{Binding Product.Name}" 
+               VerticalAlignment="Center" 
+               TextTrimming="CharacterEllipsis" 
+               Margin="5,0,5,0"
+               ToolTip="{Binding Product.Name}"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Content="{Binding Product.Price}" FontWeight="Bold"/>
+                <Label Content="x" FontWeight="Bold"/>
+                <Label Content="{Binding Quantity}" FontWeight="Bold"/>
+                <Label Content="=" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Subtotal}" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBlock Text="$" FontWeight="Bold" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        <Separator Margin="0,5,0,5" Background="LightGray"/>
+    </StackPanel>
+</UserControl>

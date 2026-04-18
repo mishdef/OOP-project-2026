@@ -8,9 +8,9 @@ namespace gsst.Model.OrderProcessors
 {
     public class FuelOrderProcessor : IOrderProcessor
     {
-        private readonly PumpService _pumpService;
+        private readonly IPumpService _pumpService;
 
-        public FuelOrderProcessor(PumpService pumpService)
+        public FuelOrderProcessor(IPumpService pumpService)
         {
             _pumpService = pumpService;
         }

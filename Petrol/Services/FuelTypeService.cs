@@ -18,10 +18,6 @@ namespace gsst.Services
             _tanksService = tanksService;
         }
 
-        public List<FuelType> GetAllFuelTypes()
-        {
-            return _context.FuelTypes.ToList();
-        }
 
         public FuelType GetFuelTypeById(int id)
         {
@@ -76,7 +72,7 @@ namespace gsst.Services
         {
             if (_tanksService.IsFuelTypeInUse(id))
             {
-                throw new Exception("Cannot delete fuel type because it is in use by a tank. Please remove the fuel type from all tanks before deleting.");
+                throw new Exception("Cannot delete fuel type because it is in use by a tank.");
             }
 
             var fuelType = _context.FuelTypes.Find(id);
@@ -85,8 +81,13 @@ namespace gsst.Services
                 throw new Exception("Fuel type not found");
             }
 
-            _context.FuelTypes.Remove(fuelType);
+            fuelType.IsDeleted = true;
             _context.SaveChanges();
+        }
+
+        public List<FuelType> GetAllFuelTypes()
+        {
+            return _context.FuelTypes.Where(f => !f.IsDeleted).ToList();
         }
 
         public void ChangePrice(int fuelTypeId, double newPrice)

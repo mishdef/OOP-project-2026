@@ -48,5 +48,7 @@ namespace gsst.Model.FuelStuff
                 _price = value;
             }
         }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

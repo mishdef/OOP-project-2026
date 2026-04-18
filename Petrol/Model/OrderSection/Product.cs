@@ -27,5 +27,7 @@ namespace gsst.Model
             } 
         }
         public abstract double Price { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

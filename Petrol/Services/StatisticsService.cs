@@ -62,25 +62,29 @@ namespace gsst.Services
         public List<string> GetMostPopularFuelTypes(int topN)
         {
             return _context.CartItems
-                .Where(i => i.Product is Fuel)
-                .Select(i => new { FuelType = ((Fuel)i.Product).Type.Name, i.Quantity })
-                .GroupBy(x => x.FuelType)
-                .OrderByDescending(g => g.Sum(x => x.Quantity))
-                .Take(topN)
-                .Select(g => g.Key)
-                .ToList();
+                           .Include(i => i.Product)
+                           .AsEnumerable()
+                           .Where(i => i.Product is Fuel)
+                           .Select(i => new { FuelType = ((Fuel)i.Product).Type?.Name ?? "Unknown", i.Quantity })
+                           .GroupBy(x => x.FuelType)
+                           .OrderByDescending(g => g.Sum(x => x.Quantity))
+                           .Take(topN)
+                           .Select(g => g.Key)
+                           .ToList();
         }
 
         public List<string> GetMostPopularPumps(int topN)
         {
             return _context.CartItems
-                .Where(i => i.Product is Fuel)
-                .Select(i => new { PumpName = ((Fuel)i.Product).Pump.Name, i.Quantity })
-                .GroupBy(x => x.PumpName)
-                .OrderByDescending(g => g.Sum(x => x.Quantity))
-                .Take(topN)
-                .Select(g => g.Key)
-                .ToList();
+                           .Include(i => i.Product)
+                           .AsEnumerable()
+                           .Where(i => i.Product is Fuel)
+                           .Select(i => new { PumpName = ((Fuel)i.Product).Pump?.Name ?? "Unknown", i.Quantity })
+                           .GroupBy(x => x.PumpName)
+                           .OrderByDescending(g => g.Sum(x => x.Quantity))
+                           .Take(topN)
+                           .Select(g => g.Key)
+                           .ToList();
         }
         public double CalcucateTotalSales()
         {
@@ -104,12 +108,16 @@ namespace gsst.Services
         public List<string> GetMostPopularProducts(int topN)
         {
             return _context.Orders
-                .SelectMany(o => o.Items)
-                .GroupBy(i => i.Product.Name)
-                .OrderByDescending(g => g.Sum(i => i.Quantity))
-                .Take(topN)
-                .Select(g => g.Key)
-                .ToList();
+                           .Include(o => o.Items)
+                               .ThenInclude(i => i.Product)
+                           .AsEnumerable()
+                           .SelectMany(o => o.Items)
+                           .Where(i => i.Product is Good)
+                           .GroupBy(i => i.Product?.Name ?? "Unknown")
+                           .OrderByDescending(g => g.Sum(i => i.Quantity))
+                           .Take(topN)
+                           .Select(g => g.Key)
+                           .ToList();
         }
     }
 }

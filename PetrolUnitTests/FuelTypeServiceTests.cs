@@ -127,7 +127,9 @@ namespace GsstUnitTests
             _fuelTypeService.DeleteFuelType(fuelType.Id);
 
             //Assert
-            Assert.IsNull(_context.FuelTypes.FirstOrDefault(x => x.Name == fuelType.Name));
+            var deletedFuel = _context.FuelTypes.Find(fuelType.Id);
+            Assert.IsNotNull(deletedFuel);
+            Assert.IsTrue(deletedFuel.IsDeleted);
         }
 
         [TestMethod]
